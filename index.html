@@ -7,66 +7,109 @@
   <title>Choose the Victim</title>
 
   <style>
-    @import url("https://fonts.googleapis.com/css2?family=Permanent+Marker&display=swap");
+    @import url("https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Permanent+Marker&display=swap");
+
+    :root {
+      --black: #080808;
+      --red: #be1e2d;
+      --dark-red: #690d16;
+      --cream: #f1e7d2;
+      --yellow: #e5b947;
+      --ink: #171411;
+      --gray: #b5afa5;
+    }
 
     * {
       box-sizing: border-box;
     }
 
     body {
+      min-height: 100vh;
       margin: 0;
       padding: 8px;
-      background-color: black;
-      color: white;
+      background:
+        radial-gradient(circle at 15% 10%, rgba(190, 30, 45, 0.17), transparent 25%),
+        radial-gradient(circle at 85% 80%, rgba(229, 185, 71, 0.09), transparent 25%),
+        repeating-linear-gradient(
+          0deg,
+          rgba(255, 255, 255, 0.015),
+          rgba(255, 255, 255, 0.015) 1px,
+          transparent 1px,
+          transparent 4px
+        ),
+        var(--black);
+      color: var(--cream);
       font-family: "Permanent Marker", cursive;
       overflow-x: hidden;
     }
 
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      border: 6px solid var(--cream);
+      opacity: 0.05;
+      pointer-events: none;
+      z-index: 1000;
+    }
+
     .schedule-tabs {
       width: 100%;
-      max-width: 1300px;
+      max-width: 1320px;
       margin: 0 auto;
     }
 
-    /* Hide the radio buttons */
     .schedule-tabs input[type="radio"] {
       position: absolute;
       opacity: 0;
       pointer-events: none;
     }
 
-    /* Small date tabs */
+    /* SMALL TICKET-STYLE DATE TABS */
+
     .tab-labels {
       display: flex;
       justify-content: center;
       align-items: center;
-      gap: 3px;
+      gap: 4px;
       width: 100%;
-      margin: 0 0 8px;
+      margin: 0 0 10px;
+      padding: 4px;
     }
 
     .tab-labels label {
-      flex: 0 1 70px;
-      min-width: 45px;
-      max-width: 70px;
-      padding: 3px 5px;
-      border: 1px solid #c8102e;
-      color: white;
+      position: relative;
+      flex: 0 0 55px;
+      min-width: 55px;
+      max-width: 55px;
+      padding: 4px 2px;
+      background-color: var(--cream);
+      border: 1px dashed var(--red);
+      color: var(--ink);
       font-family: Arial, sans-serif;
-      font-size: 12px;
-      font-weight: bold;
-      line-height: 16px;
+      font-size: 11px;
+      font-weight: 900;
+      line-height: 14px;
       text-align: center;
       cursor: pointer;
       white-space: nowrap;
-      transition: background-color 0.2s ease;
+      box-shadow: 2px 2px 0 var(--dark-red);
+      transform: rotate(-1deg);
+      transition:
+        background-color 0.2s ease,
+        color 0.2s ease,
+        transform 0.2s ease;
+    }
+
+    .tab-labels label:nth-child(even) {
+      transform: rotate(1deg);
     }
 
     .tab-labels label:hover {
-      background-color: #650817;
+      background-color: var(--yellow);
+      transform: rotate(0deg) translateY(-2px);
     }
 
-    /* Active date tab */
     #day-1:checked ~ .tab-labels label[for="day-1"],
     #day-2:checked ~ .tab-labels label[for="day-2"],
     #day-3:checked ~ .tab-labels label[for="day-3"],
@@ -74,17 +117,17 @@
     #day-5:checked ~ .tab-labels label[for="day-5"],
     #day-6:checked ~ .tab-labels label[for="day-6"],
     #day-7:checked ~ .tab-labels label[for="day-7"] {
-      background-color: #c8102e;
-      color: black;
-      box-shadow: 0 0 6px #c8102e;
+      background-color: var(--red);
+      border-color: var(--cream);
+      color: white;
+      box-shadow: 3px 3px 0 var(--yellow);
+      transform: rotate(0deg) translateY(-2px);
     }
 
-    /* Hide all day sections */
     .tab-content {
       display: none;
     }
 
-    /* Show the selected day */
     #day-1:checked ~ .content-area .day-1-content,
     #day-2:checked ~ .content-area .day-2-content,
     #day-3:checked ~ .content-area .day-3-content,
@@ -95,48 +138,113 @@
       display: block;
     }
 
-    .day-title {
-      margin: 3px 0 10px;
-      color: #c8102e;
-      font-size: 32px;
+    /* SHOW HEADER */
+
+    .show-header {
+      position: relative;
+      width: fit-content;
+      margin: 2px auto 16px;
+      padding: 8px 24px 10px;
       text-align: center;
-      animation: bloody 4s ease infinite alternate;
+      transform: rotate(-1deg);
     }
 
-    @keyframes bloody {
-      0% {
-        text-shadow: 0 1px 3px #c8102e;
-      }
-
-      100% {
-        text-shadow:
-          0 4px 3px #c8102e,
-          0 8px 3px #c8102e,
-          0 12px 3px #c8102e;
-      }
+    .show-header::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background-color: var(--cream);
+      border: 3px solid var(--red);
+      box-shadow:
+        6px 6px 0 var(--dark-red),
+        -3px -3px 0 var(--yellow);
+      z-index: -1;
     }
+
+    .show-title {
+      margin: 0;
+      color: var(--ink);
+      font-family: "Bebas Neue", Impact, sans-serif;
+      font-size: clamp(42px, 6vw, 80px);
+      line-height: 0.9;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+    }
+
+    .show-tagline {
+      margin: 5px 0 0;
+      color: var(--red);
+      font-family: "Permanent Marker", cursive;
+      font-size: clamp(13px, 2vw, 20px);
+    }
+
+    .day-title {
+      width: fit-content;
+      margin: 0 auto 12px;
+      padding: 4px 14px;
+      background-color: var(--red);
+      color: white;
+      font-family: "Bebas Neue", Impact, sans-serif;
+      font-size: 30px;
+      font-weight: normal;
+      letter-spacing: 2px;
+      text-align: center;
+      text-transform: uppercase;
+      box-shadow: 4px 4px 0 var(--cream);
+      transform: rotate(1deg);
+    }
+
+    /* VOTE AND POLL AREA */
 
     .main-section {
       display: flex;
       justify-content: center;
-      align-items: center;
-      gap: 25px;
+      align-items: stretch;
+      gap: 20px;
       width: 100%;
       margin-bottom: 20px;
     }
 
     .left-side {
-      flex: 0 0 34%;
+      flex: 0 0 32%;
       display: flex;
       justify-content: center;
-      align-items: center;
+      align-items: stretch;
     }
 
     .right-side {
-      flex: 0 0 60%;
+      flex: 1 1 68%;
       display: flex;
       justify-content: center;
-      align-items: center;
+      align-items: stretch;
+    }
+
+    .evidence-card {
+      position: relative;
+      width: 100%;
+      padding: 15px;
+      background-color: var(--cream);
+      color: var(--ink);
+      border: 3px solid var(--red);
+      box-shadow:
+        7px 7px 0 var(--dark-red),
+        -3px -3px 0 var(--yellow);
+      text-align: center;
+      transform: rotate(-0.5deg);
+    }
+
+    .evidence-card::before {
+      content: "AUDIENCE EVIDENCE";
+      display: inline-block;
+      margin-bottom: 5px;
+      padding: 2px 8px;
+      background-color: var(--ink);
+      color: var(--cream);
+      font-family: Arial, sans-serif;
+      font-size: 10px;
+      font-weight: bold;
+      letter-spacing: 1px;
+      transform: rotate(1deg);
     }
 
     .qr {
@@ -145,39 +253,107 @@
     }
 
     .qr h2 {
-      margin: 0 0 5px;
-      color: #c8102e;
-      font-size: 44px;
+      margin: 0 0 3px;
+      color: var(--red);
+      font-family: "Bebas Neue", Impact, sans-serif;
+      font-size: 56px;
+      font-weight: normal;
+      line-height: 0.9;
+      letter-spacing: 3px;
+    }
+
+    .qr-note {
+      margin: 0 0 10px;
+      color: var(--ink);
+      font-family: "Permanent Marker", cursive;
+      font-size: 14px;
     }
 
     .qr img {
       display: block;
-      width: 190px;
-      height: 190px;
+      width: 185px;
+      height: 185px;
       margin: 0 auto;
+      padding: 7px;
+      background-color: white;
+      border: 3px solid var(--ink);
+      box-shadow: 5px 5px 0 var(--red);
+      transform: rotate(1deg);
     }
 
     .qr a {
       display: block;
-      margin-top: 8px;
-      color: white;
+      margin-top: 12px;
+      padding: 5px;
+      color: var(--ink);
       font-family: Arial, sans-serif;
-      font-size: 22px;
-      font-weight: bold;
-      text-decoration: none;
+      font-size: 19px;
+      font-weight: 900;
+      text-decoration: underline;
       overflow-wrap: anywhere;
     }
 
     .qr a:hover {
-      color: #c8102e;
+      color: var(--red);
+    }
+
+    .poll-frame {
+      position: relative;
+      width: 100%;
+      padding: 9px;
+      background-color: var(--cream);
+      border: 3px solid var(--red);
+      box-shadow:
+        7px 7px 0 var(--dark-red),
+        -3px -3px 0 var(--yellow);
+      transform: rotate(0.3deg);
+    }
+
+    .poll-label {
+      position: absolute;
+      top: -12px;
+      left: 20px;
+      z-index: 2;
+      padding: 3px 10px;
+      background-color: var(--yellow);
+      color: var(--ink);
+      font-family: Arial, sans-serif;
+      font-size: 11px;
+      font-weight: 900;
+      letter-spacing: 1px;
+      transform: rotate(-2deg);
     }
 
     iframe {
+      display: block;
       width: 100%;
       height: 400px;
-      border: 2px solid #c8102e;
+      border: 3px solid var(--ink);
       background-color: white;
-      box-shadow: 0 0 12px #c8102e;
+    }
+
+    /* SUSPECT CARDS */
+
+    .suspect-heading {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin: 5px 0 12px;
+      color: var(--cream);
+      font-family: "Bebas Neue", Impact, sans-serif;
+      font-size: 30px;
+      font-weight: normal;
+      letter-spacing: 3px;
+      text-align: center;
+      text-transform: uppercase;
+    }
+
+    .suspect-heading::before,
+    .suspect-heading::after {
+      content: "";
+      flex: 1;
+      height: 2px;
+      background-color: var(--red);
     }
 
     .images {
@@ -185,38 +361,71 @@
       flex-wrap: nowrap;
       justify-content: center;
       align-items: flex-start;
-      gap: 10px;
+      gap: 12px;
       width: 100%;
-      padding: 8px 0 20px;
+      padding: 12px 5px 30px;
       overflow-x: auto;
     }
 
     .person {
-      flex: 0 0 115px;
-      width: 115px;
+      position: relative;
+      flex: 0 0 118px;
+      width: 118px;
+      padding: 7px 7px 9px;
+      background-color: var(--cream);
+      color: var(--ink);
       text-align: center;
+      border: 2px solid var(--ink);
+      box-shadow: 5px 5px 0 var(--red);
+      transform: rotate(-1deg);
+    }
+
+    .person:nth-child(even) {
+      transform: rotate(1deg);
+    }
+
+    .person:nth-child(3n) {
+      transform: rotate(-0.4deg);
+    }
+
+    .person::before {
+      content: "SUSPECT";
+      display: block;
+      margin-bottom: 5px;
+      color: var(--red);
+      font-family: Arial, sans-serif;
+      font-size: 9px;
+      font-weight: 900;
+      letter-spacing: 2px;
     }
 
     .person img {
       display: block;
-      width: 115px;
-      height: 170px;
+      width: 100%;
+      height: 165px;
       object-fit: cover;
-      border: 2px solid #c8102e;
-      box-shadow: 0 0 8px #c8102e;
+      filter: contrast(1.08) saturate(0.9);
+      border: 3px solid var(--ink);
+      background-color: var(--gray);
     }
 
     .person button {
       width: 100%;
-      margin-top: 4px;
-      padding: 5px 3px;
-      background-color: transparent;
-      border: 1px solid #c8102e;
+      margin-top: 6px;
+      padding: 4px 2px;
+      background-color: var(--red);
+      border: 2px solid var(--ink);
       color: white;
       font-family: "Permanent Marker", cursive;
-      font-size: 17px;
+      font-size: 16px;
       cursor: default;
-      text-shadow: 1px 1px #c8102e;
+      box-shadow: 2px 2px 0 var(--yellow);
+    }
+
+    .person:hover {
+      z-index: 2;
+      box-shadow: 7px 7px 0 var(--yellow);
+      transform: rotate(0deg) translateY(-3px);
     }
 
     @media (max-width: 768px) {
@@ -227,23 +436,37 @@
       .tab-labels {
         justify-content: flex-start;
         overflow-x: auto;
-        padding-bottom: 3px;
+        padding: 4px 2px 8px;
       }
 
       .tab-labels label {
-        flex: 0 0 48px;
-        min-width: 48px;
-        padding: 2px 3px;
-        font-size: 10px;
+        flex: 0 0 46px;
+        min-width: 46px;
+        max-width: 46px;
+        padding: 3px 1px;
+        font-size: 9px;
+      }
+
+      .show-header {
+        margin-bottom: 14px;
+        padding: 7px 15px 9px;
+      }
+
+      .show-title {
+        font-size: 46px;
+      }
+
+      .show-tagline {
+        font-size: 13px;
       }
 
       .day-title {
-        font-size: 26px;
+        font-size: 24px;
       }
 
       .main-section {
         flex-direction: column;
-        gap: 15px;
+        gap: 18px;
       }
 
       .left-side,
@@ -253,7 +476,7 @@
       }
 
       .qr h2 {
-        font-size: 36px;
+        font-size: 46px;
       }
 
       .qr img {
@@ -262,7 +485,7 @@
       }
 
       .qr a {
-        font-size: 17px;
+        font-size: 16px;
       }
 
       iframe {
@@ -274,17 +497,21 @@
       }
 
       .person {
-        flex: 0 0 85px;
-        width: 85px;
+        flex: 0 0 92px;
+        width: 92px;
+        padding: 5px;
       }
 
       .person img {
-        width: 85px;
         height: 128px;
       }
 
       .person button {
         font-size: 12px;
+      }
+
+      .suspect-heading {
+        font-size: 23px;
       }
     }
   </style>
@@ -294,7 +521,6 @@
 
   <div class="schedule-tabs">
 
-    <!-- DATE CONTROLS -->
     <input type="radio" name="schedule" id="day-1" checked>
     <input type="radio" name="schedule" id="day-2">
     <input type="radio" name="schedule" id="day-3">
@@ -303,7 +529,6 @@
     <input type="radio" name="schedule" id="day-6">
     <input type="radio" name="schedule" id="day-7">
 
-    <!-- SMALL DATE TABS -->
     <div class="tab-labels">
       <label for="day-1">8/8</label>
       <label for="day-2">8/9</label>
@@ -314,77 +539,91 @@
       <label for="day-7">8/14</label>
     </div>
 
+    <div class="show-header">
+      <h1 class="show-title">Choose the Victim</h1>
+      <p class="show-tagline">Someone has to die. The audience gets to decide.</p>
+    </div>
+
     <div class="content-area">
 
       <!-- MONDAY 8 -->
       <div class="tab-content day-1-content">
 
-        <h1 class="day-title">Monday 8</h1>
+        <h2 class="day-title">Monday 8</h2>
 
         <div class="main-section">
 
           <div class="left-side">
-            <div class="qr">
-              <h2>VOTE</h2>
+            <div class="evidence-card">
+              <div class="qr">
+                <h2>Vote</h2>
+                <p class="qr-note">Scan the evidence. Choose carefully.</p>
 
-              <img
-                src="https://etc.ch/Vfqp?qr"
-                alt="Monday 8 voting QR code"
-              >
+                <img
+                  src="https://etc.ch/Vfqp?qr"
+                  alt="Monday 8 voting QR code"
+                >
 
-              <a
-                href="https://etc.ch/Vfqp"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                https://etc.ch/Vfqp
-              </a>
+                <a
+                  href="https://etc.ch/Vfqp"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  etc.ch/Vfqp
+                </a>
+              </div>
             </div>
           </div>
 
           <div class="right-side">
-            <iframe
-              src="https://directpoll.com/r?XDbzPBd3ixYqg842QTuxpfbXblymovnqdsHcmY0fyPCcL"
-              title="Monday 8 poll"
-            ></iframe>
+            <div class="poll-frame">
+              <span class="poll-label">LIVE RESULTS</span>
+
+              <iframe
+                src="https://directpoll.com/r?XDbzPBd3ixYqg842QTuxpfbXblymovnqdsHcmY0fyPCcL"
+                title="Monday 8 poll"
+              ></iframe>
+            </div>
           </div>
 
         </div>
 
+        <h3 class="suspect-heading">Tonight's Suspects</h3>
+
         <div class="images">
 
           <div class="person">
-            <img src="r.png" alt="Rachel">
+            <img src="rachel.png" alt="Rachel">
             <button type="button">Rachel</button>
           </div>
 
           <div class="person">
-            <img src="p.png" alt="Peter">
+            <img src="peter.png" alt="Peter">
             <button type="button">Peter</button>
           </div>
 
           <div class="person">
-            <img src="e.png" alt="Eric">
+            <img src="eric.png" alt="Eric">
             <button type="button">Eric</button>
           </div>
 
           <div class="person">
-            <img src="m.png" alt="Megan">
+            <img src="megan.png" alt="Megan">
             <button type="button">Megan</button>
           </div>
 
           <div class="person">
-            <img src="b.png" alt="Brittany">
+            <img src="brittany.png" alt="Brittany">
             <button type="button">Brittany</button>
           </div>
 
           <div class="person">
-            <img src="k.png" alt="Kat">
+            <img src="kat.png" alt="Kat">
             <button type="button">Kat</button>
           </div>
 
           <div class="person">
-            <img src="9.png" alt="Beau">
+            <img src="beau.png" alt="Beau">
             <button type="button">Beau</button>
           </div>
 
@@ -394,72 +633,81 @@
       <!-- TUESDAY 9 -->
       <div class="tab-content day-2-content">
 
-        <h1 class="day-title">Tuesday 9</h1>
+        <h2 class="day-title">Tuesday 9</h2>
 
         <div class="main-section">
 
           <div class="left-side">
-            <div class="qr">
-              <h2>VOTE</h2>
+            <div class="evidence-card">
+              <div class="qr">
+                <h2>Vote</h2>
+                <p class="qr-note">Scan the evidence. Choose carefully.</p>
 
-              <img
-                src="https://etc.ch/Vfqp?qr"
-                alt="Tuesday 9 voting QR code"
-              >
+                <img
+                  src="https://etc.ch/Vfqp?qr"
+                  alt="Tuesday 9 voting QR code"
+                >
 
-              <a
-                href="https://etc.ch/Vfqp"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                https://etc.ch/Vfqp
-              </a>
+                <a
+                  href="https://etc.ch/Vfqp"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  etc.ch/Vfqp
+                </a>
+              </div>
             </div>
           </div>
 
           <div class="right-side">
-            <iframe
-              src="https://directpoll.com/r?XDbzPBd3ixYqg842QTuxpfbXblymovnqdsHcmY0fyPCcL"
-              title="Tuesday 9 poll"
-            ></iframe>
+            <div class="poll-frame">
+              <span class="poll-label">LIVE RESULTS</span>
+
+              <iframe
+                src="https://directpoll.com/r?XDbzPBd3ixYqg842QTuxpfbXblymovnqdsHcmY0fyPCcL"
+                title="Tuesday 9 poll"
+              ></iframe>
+            </div>
           </div>
 
         </div>
 
+        <h3 class="suspect-heading">Tonight's Suspects</h3>
+
         <div class="images">
 
           <div class="person">
-            <img src="w.png" alt="Wilder">
+            <img src="wilder.png" alt="Wilder">
             <button type="button">Wilder</button>
           </div>
 
           <div class="person">
-            <img src="p.png" alt="Peter">
+            <img src="peter.png" alt="Peter">
             <button type="button">Peter</button>
           </div>
 
           <div class="person">
-            <img src="e.png" alt="Eric">
+            <img src="eric.png" alt="Eric">
             <button type="button">Eric</button>
           </div>
 
           <div class="person">
-            <img src="r.png" alt="Rachel">
+            <img src="rachel.png" alt="Rachel">
             <button type="button">Rachel</button>
           </div>
 
           <div class="person">
-            <img src="k.png" alt="Kat">
+            <img src="kat.png" alt="Kat">
             <button type="button">Kat</button>
           </div>
 
           <div class="person">
-            <img src="b.png" alt="Brittany">
+            <img src="brittany.png" alt="Brittany">
             <button type="button">Brittany</button>
           </div>
 
           <div class="person">
-            <img src="9.png" alt="Beau">
+            <img src="beau.png" alt="Beau">
             <button type="button">Beau</button>
           </div>
 
@@ -469,67 +717,76 @@
       <!-- WEDNESDAY 10 -->
       <div class="tab-content day-3-content">
 
-        <h1 class="day-title">Wednesday 10</h1>
+        <h2 class="day-title">Wednesday 10</h2>
 
         <div class="main-section">
 
           <div class="left-side">
-            <div class="qr">
-              <h2>VOTE</h2>
+            <div class="evidence-card">
+              <div class="qr">
+                <h2>Vote</h2>
+                <p class="qr-note">Scan the evidence. Choose carefully.</p>
 
-              <img
-                src="https://etc.ch/Vfqp?qr"
-                alt="Wednesday 10 voting QR code"
-              >
+                <img
+                  src="https://etc.ch/Vfqp?qr"
+                  alt="Wednesday 10 voting QR code"
+                >
 
-              <a
-                href="https://etc.ch/Vfqp"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                https://etc.ch/Vfqp
-              </a>
+                <a
+                  href="https://etc.ch/Vfqp"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  etc.ch/Vfqp
+                </a>
+              </div>
             </div>
           </div>
 
           <div class="right-side">
-            <iframe
-              src="https://directpoll.com/r?XDbzPBd3ixYqg842QTuxpfbXblymovnqdsHcmY0fyPCcL"
-              title="Wednesday 10 poll"
-            ></iframe>
+            <div class="poll-frame">
+              <span class="poll-label">LIVE RESULTS</span>
+
+              <iframe
+                src="https://directpoll.com/r?XDbzPBd3ixYqg842QTuxpfbXblymovnqdsHcmY0fyPCcL"
+                title="Wednesday 10 poll"
+              ></iframe>
+            </div>
           </div>
 
         </div>
 
+        <h3 class="suspect-heading">Tonight's Suspects</h3>
+
         <div class="images">
 
           <div class="person">
-            <img src="r.png" alt="Rachel">
+            <img src="rachel.png" alt="Rachel">
             <button type="button">Rachel</button>
           </div>
 
           <div class="person">
-            <img src="p.png" alt="Peter">
+            <img src="peter.png" alt="Peter">
             <button type="button">Peter</button>
           </div>
 
           <div class="person">
-            <img src="e.png" alt="Eric">
+            <img src="eric.png" alt="Eric">
             <button type="button">Eric</button>
           </div>
 
           <div class="person">
-            <img src="m.png" alt="Megan">
+            <img src="megan.png" alt="Megan">
             <button type="button">Megan</button>
           </div>
 
           <div class="person">
-            <img src="w.png" alt="Wilder">
+            <img src="wilder.png" alt="Wilder">
             <button type="button">Wilder</button>
           </div>
 
           <div class="person">
-            <img src="b.png" alt="Brittany">
+            <img src="brittany.png" alt="Brittany">
             <button type="button">Brittany</button>
           </div>
 
@@ -539,72 +796,81 @@
       <!-- THURSDAY 11 -->
       <div class="tab-content day-4-content">
 
-        <h1 class="day-title">Thursday 11</h1>
+        <h2 class="day-title">Thursday 11</h2>
 
         <div class="main-section">
 
           <div class="left-side">
-            <div class="qr">
-              <h2>VOTE</h2>
+            <div class="evidence-card">
+              <div class="qr">
+                <h2>Vote</h2>
+                <p class="qr-note">Scan the evidence. Choose carefully.</p>
 
-              <img
-                src="https://etc.ch/Vfqp?qr"
-                alt="Thursday 11 voting QR code"
-              >
+                <img
+                  src="https://etc.ch/Vfqp?qr"
+                  alt="Thursday 11 voting QR code"
+                >
 
-              <a
-                href="https://etc.ch/Vfqp"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                https://etc.ch/Vfqp
-              </a>
+                <a
+                  href="https://etc.ch/Vfqp"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  etc.ch/Vfqp
+                </a>
+              </div>
             </div>
           </div>
 
           <div class="right-side">
-            <iframe
-              src="https://directpoll.com/r?XDbzPBd3ixYqg842QTuxpfbXblymovnqdsHcmY0fyPCcL"
-              title="Thursday 11 poll"
-            ></iframe>
+            <div class="poll-frame">
+              <span class="poll-label">LIVE RESULTS</span>
+
+              <iframe
+                src="https://directpoll.com/r?XDbzPBd3ixYqg842QTuxpfbXblymovnqdsHcmY0fyPCcL"
+                title="Thursday 11 poll"
+              ></iframe>
+            </div>
           </div>
 
         </div>
 
+        <h3 class="suspect-heading">Tonight's Suspects</h3>
+
         <div class="images">
 
           <div class="person">
-            <img src="w.png" alt="Wilder">
+            <img src="wilder.png" alt="Wilder">
             <button type="button">Wilder</button>
           </div>
 
           <div class="person">
-            <img src="p.png" alt="Peter">
+            <img src="peter.png" alt="Peter">
             <button type="button">Peter</button>
           </div>
 
           <div class="person">
-            <img src="r.png" alt="Rachel">
+            <img src="rachel.png" alt="Rachel">
             <button type="button">Rachel</button>
           </div>
 
           <div class="person">
-            <img src="m.png" alt="Megan">
+            <img src="megan.png" alt="Megan">
             <button type="button">Megan</button>
           </div>
 
           <div class="person">
-            <img src="k.png" alt="Kat">
+            <img src="kat.png" alt="Kat">
             <button type="button">Kat</button>
           </div>
 
           <div class="person">
-            <img src="b.png" alt="Brittany">
+            <img src="brittany.png" alt="Brittany">
             <button type="button">Brittany</button>
           </div>
 
           <div class="person">
-            <img src="9.png" alt="Beau">
+            <img src="beau.png" alt="Beau">
             <button type="button">Beau</button>
           </div>
 
@@ -614,67 +880,76 @@
       <!-- FRIDAY 12 -->
       <div class="tab-content day-5-content">
 
-        <h1 class="day-title">Friday 12</h1>
+        <h2 class="day-title">Friday 12</h2>
 
         <div class="main-section">
 
           <div class="left-side">
-            <div class="qr">
-              <h2>VOTE</h2>
+            <div class="evidence-card">
+              <div class="qr">
+                <h2>Vote</h2>
+                <p class="qr-note">Scan the evidence. Choose carefully.</p>
 
-              <img
-                src="https://etc.ch/Vfqp?qr"
-                alt="Friday 12 voting QR code"
-              >
+                <img
+                  src="https://etc.ch/Vfqp?qr"
+                  alt="Friday 12 voting QR code"
+                >
 
-              <a
-                href="https://etc.ch/Vfqp"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                https://etc.ch/Vfqp
-              </a>
+                <a
+                  href="https://etc.ch/Vfqp"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  etc.ch/Vfqp
+                </a>
+              </div>
             </div>
           </div>
 
           <div class="right-side">
-            <iframe
-              src="https://directpoll.com/r?XDbzPBd3ixYqg842QTuxpfbXblymovnqdsHcmY0fyPCcL"
-              title="Friday 12 poll"
-            ></iframe>
+            <div class="poll-frame">
+              <span class="poll-label">LIVE RESULTS</span>
+
+              <iframe
+                src="https://directpoll.com/r?XDbzPBd3ixYqg842QTuxpfbXblymovnqdsHcmY0fyPCcL"
+                title="Friday 12 poll"
+              ></iframe>
+            </div>
           </div>
 
         </div>
 
+        <h3 class="suspect-heading">Tonight's Suspects</h3>
+
         <div class="images">
 
           <div class="person">
-            <img src="r.png" alt="Rachel">
+            <img src="rachel.png" alt="Rachel">
             <button type="button">Rachel</button>
           </div>
 
           <div class="person">
-            <img src="e.png" alt="Eric">
+            <img src="eric.png" alt="Eric">
             <button type="button">Eric</button>
           </div>
 
           <div class="person">
-            <img src="m.png" alt="Megan">
+            <img src="megan.png" alt="Megan">
             <button type="button">Megan</button>
           </div>
 
           <div class="person">
-            <img src="w.png" alt="Wilder">
+            <img src="wilder.png" alt="Wilder">
             <button type="button">Wilder</button>
           </div>
 
           <div class="person">
-            <img src="g.png" alt="Gabby">
+            <img src="gabby.png" alt="Gabby">
             <button type="button">Gabby</button>
           </div>
 
           <div class="person">
-            <img src="b.png" alt="Brittany">
+            <img src="brittany.png" alt="Brittany">
             <button type="button">Brittany</button>
           </div>
 
@@ -684,67 +959,76 @@
       <!-- SATURDAY 13 -->
       <div class="tab-content day-6-content">
 
-        <h1 class="day-title">Saturday 13</h1>
+        <h2 class="day-title">Saturday 13</h2>
 
         <div class="main-section">
 
           <div class="left-side">
-            <div class="qr">
-              <h2>VOTE</h2>
+            <div class="evidence-card">
+              <div class="qr">
+                <h2>Vote</h2>
+                <p class="qr-note">Scan the evidence. Choose carefully.</p>
 
-              <img
-                src="https://etc.ch/Vfqp?qr"
-                alt="Saturday 13 voting QR code"
-              >
+                <img
+                  src="https://etc.ch/Vfqp?qr"
+                  alt="Saturday 13 voting QR code"
+                >
 
-              <a
-                href="https://etc.ch/Vfqp"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                https://etc.ch/Vfqp
-              </a>
+                <a
+                  href="https://etc.ch/Vfqp"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  etc.ch/Vfqp
+                </a>
+              </div>
             </div>
           </div>
 
           <div class="right-side">
-            <iframe
-              src="https://directpoll.com/r?XDbzPBd3ixYqg842QTuxpfbXblymovnqdsHcmY0fyPCcL"
-              title="Saturday 13 poll"
-            ></iframe>
+            <div class="poll-frame">
+              <span class="poll-label">LIVE RESULTS</span>
+
+              <iframe
+                src="https://directpoll.com/r?XDbzPBd3ixYqg842QTuxpfbXblymovnqdsHcmY0fyPCcL"
+                title="Saturday 13 poll"
+              ></iframe>
+            </div>
           </div>
 
         </div>
 
+        <h3 class="suspect-heading">Tonight's Suspects</h3>
+
         <div class="images">
 
           <div class="person">
-            <img src="w.png" alt="Wilder">
+            <img src="wilder.png" alt="Wilder">
             <button type="button">Wilder</button>
           </div>
 
           <div class="person">
-            <img src="p.png" alt="Peter">
+            <img src="peter.png" alt="Peter">
             <button type="button">Peter</button>
           </div>
 
           <div class="person">
-            <img src="e.png" alt="Eric">
+            <img src="eric.png" alt="Eric">
             <button type="button">Eric</button>
           </div>
 
           <div class="person">
-            <img src="m.png" alt="Megan">
+            <img src="megan.png" alt="Megan">
             <button type="button">Megan</button>
           </div>
 
           <div class="person">
-            <img src="g.png" alt="Gabby">
+            <img src="gabby.png" alt="Gabby">
             <button type="button">Gabby</button>
           </div>
 
           <div class="person">
-            <img src="k.png" alt="Kat">
+            <img src="kat.png" alt="Kat">
             <button type="button">Kat</button>
           </div>
 
@@ -759,67 +1043,76 @@
       <!-- SUNDAY 14 -->
       <div class="tab-content day-7-content">
 
-        <h1 class="day-title">Sunday 14</h1>
+        <h2 class="day-title">Sunday 14</h2>
 
         <div class="main-section">
 
           <div class="left-side">
-            <div class="qr">
-              <h2>VOTE</h2>
+            <div class="evidence-card">
+              <div class="qr">
+                <h2>Vote</h2>
+                <p class="qr-note">Scan the evidence. Choose carefully.</p>
 
-              <img
-                src="https://etc.ch/Vfqp?qr"
-                alt="Sunday 14 voting QR code"
-              >
+                <img
+                  src="https://etc.ch/Vfqp?qr"
+                  alt="Sunday 14 voting QR code"
+                >
 
-              <a
-                href="https://etc.ch/Vfqp"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                https://etc.ch/Vfqp
-              </a>
+                <a
+                  href="https://etc.ch/Vfqp"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  etc.ch/Vfqp
+                </a>
+              </div>
             </div>
           </div>
 
           <div class="right-side">
-            <iframe
-              src="https://directpoll.com/r?XDbzPBd3ixYqg842QTuxpfbXblymovnqdsHcmY0fyPCcL"
-              title="Sunday 14 poll"
-            ></iframe>
+            <div class="poll-frame">
+              <span class="poll-label">LIVE RESULTS</span>
+
+              <iframe
+                src="https://directpoll.com/r?XDbzPBd3ixYqg842QTuxpfbXblymovnqdsHcmY0fyPCcL"
+                title="Sunday 14 poll"
+              ></iframe>
+            </div>
           </div>
 
         </div>
 
+        <h3 class="suspect-heading">Tonight's Suspects</h3>
+
         <div class="images">
 
           <div class="person">
-            <img src="r.png" alt="Rachel">
+            <img src="rachel.png" alt="Rachel">
             <button type="button">Rachel</button>
           </div>
 
           <div class="person">
-            <img src="p.png" alt="Peter">
+            <img src="peter.png" alt="Peter">
             <button type="button">Peter</button>
           </div>
 
           <div class="person">
-            <img src="e.png" alt="Eric">
+            <img src="eric.png" alt="Eric">
             <button type="button">Eric</button>
           </div>
 
           <div class="person">
-            <img src="m.png" alt="Megan">
+            <img src="megan.png" alt="Megan">
             <button type="button">Megan</button>
           </div>
 
           <div class="person">
-            <img src="w.png" alt="Wilder">
+            <img src="wilder.png" alt="Wilder">
             <button type="button">Wilder</button>
           </div>
 
           <div class="person">
-            <img src="g.png" alt="Gabby">
+            <img src="gabby.png" alt="Gabby">
             <button type="button">Gabby</button>
           </div>
 
